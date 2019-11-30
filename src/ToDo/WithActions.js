@@ -1,14 +1,30 @@
-import React from "react";
-import { StoreProvider } from "./store/withMiddleware";
+import React, { useReducer, useEffect, useContext } from "react";
+import { reducers, initialState, useReducerActions } from "./store";
+import StoreContext from "./store/withoutMiddleware/context";
 import { List, AddItemForm } from "./components";
 
-export default function ToDo() {
+function ToDo() {
+  const { state } = useContext(StoreContext);
+  const { getItems } = useReducerActions();
+
+  useEffect(() => {
+    getItems();
+  }, [getItems]);
+
   return (
     <div className="todo-app">
-      <StoreProvider>
-        <AddItemForm />
-        <List />
-      </StoreProvider>
+      <AddItemForm />
+      <List items={state.todoItems} />
     </div>
+  );
+} 
+
+export default function App() {
+  const [state, dispatch] = useReducer(reducers, initialState);
+
+  return (
+    <StoreContext.Provider value={{ state, dispatch }}>
+      <ToDo />
+    </StoreContext.Provider>
   );
 }
