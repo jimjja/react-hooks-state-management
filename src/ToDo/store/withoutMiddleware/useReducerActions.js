@@ -12,7 +12,8 @@ import { ToDoStorage } from "../../../Services/Storage/Domains";
 export default function useReducerActions() {
   const { dispatch } = useContext(StoreContext);
 
-  const getItems = useCallback(async () =>  {
+  const getItems = useCallback(async () => {
+    console.log("I AM CALLED");
     const results = await ToDoHttp.getItems();
     await ToDoStorage.setItems(results);
 
@@ -20,38 +21,47 @@ export default function useReducerActions() {
       type: SET_TODO_ITEMS,
       todoItems: results
     });
-  }, [dispatch])
+  }, [dispatch]);
 
-  async function toggleItemCompletion(id, isCompleted) {
-    await ToDoHttp.updateItem({
-      id,
-      isCompleted
-    });
+  const toggleItemCompletion = useCallback(
+    async (id, isCompleted) => {
+      await ToDoHttp.updateItem({
+        id,
+        isCompleted
+      });
 
-    await ToDoStorage.updateItem({
-      id,
-      isCompleted
-    });
+      await ToDoStorage.updateItem({
+        id,
+        isCompleted
+      });
 
-    dispatch({
-      type: TOGGLE_ITEM_COMPLETION,
-      id,
-      isCompleted
-    });
-  }
+      dispatch({
+        type: TOGGLE_ITEM_COMPLETION,
+        id,
+        isCompleted
+      });
+    },
+    [dispatch]
+  );
 
-  async function deleteItem(id) {
-    await ToDoHttp.deleteItem(id);
-    await ToDoStorage.deleteItem(id);
-    dispatch({ type: DELETE_TODO, id });
-  }
+  const deleteItem = useCallback(
+    async id => {
+      await ToDoHttp.deleteItem(id);
+      await ToDoStorage.deleteItem(id);
+      dispatch({ type: DELETE_TODO, id });
+    },
+    [dispatch]
+  );
 
-  async function addItem(value) {
-    const result = await ToDoHttp.addItem(value);
-    await ToDoStorage.addItem(result);
+  const addItem = useCallback(
+    async value => {
+      const result = await ToDoHttp.addItem(value);
+      await ToDoStorage.addItem(result);
 
-    dispatch({ type: ADD_TODO, newItem: result });
-  }
+      dispatch({ type: ADD_TODO, newItem: result });
+    },
+    [dispatch]
+  );
 
   return {
     toggleItemCompletion,

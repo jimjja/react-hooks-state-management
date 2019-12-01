@@ -9,7 +9,7 @@ function ToDo() {
 
   useEffect(() => {
     getItems();
-  }, []);
+  }, [getItems]);
 
 
   return (

@@ -1,31 +1,45 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import { StoreContext } from "..";
-import { SET_TODO_ITEMS, ADD_TODO, DELETE_TODO, TOGGLE_ITEM_COMPLETION } from "../constants/types";
+import {
+  SET_TODO_ITEMS,
+  ADD_TODO,
+  DELETE_TODO,
+  TOGGLE_ITEM_COMPLETION
+} from "../constants/types";
 
 export default function useReducerActions() {
   const { dispatch } = useContext(StoreContext);
 
-  function getItems() {
+  const getItems = useCallback(() => {
     dispatch({
-      type: SET_TODO_ITEMS,
+      type: SET_TODO_ITEMS
     });
-  }
+  }, [dispatch]);
 
-  function toggleItemCompletion(id, isCompleted) {
-    dispatch({
-      type: TOGGLE_ITEM_COMPLETION,
-      id,
-      isCompleted
-    });
-  }
+  const toggleItemCompletion = useCallback(
+    (id, isCompleted) => {
+      dispatch({
+        type: TOGGLE_ITEM_COMPLETION,
+        id,
+        isCompleted
+      });
+    },
+    [dispatch]
+  );
 
-  function deleteItem(id) {
-    dispatch({ type: DELETE_TODO, id: id });
-  }
+  const deleteItem = useCallback(
+    id => {
+      dispatch({ type: DELETE_TODO, id: id });
+    },
+    [dispatch]
+  );
 
-  function addItem(value) {
-    dispatch({ type: ADD_TODO, value: value });
-  }
+  const addItem = useCallback(
+    value => {
+      dispatch({ type: ADD_TODO, value: value });
+    },
+    [dispatch]
+  );
 
   return {
     toggleItemCompletion,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useReducerActions } from "../../store";
 
-export default function AddItemForm({}) {
+export default function AddItemForm() {
   const [itemValue, setItemValiue] = useState("");
   const { addItem } = useReducerActions();
 
