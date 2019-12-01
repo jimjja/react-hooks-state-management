@@ -1,5 +1,5 @@
 import { useContext, useCallback } from "react";
-import StoreContext from "./context";
+import { StoreContext } from "./storeProvider";
 import {
   SET_TODO_ITEMS,
   ADD_TODO,
@@ -13,7 +13,6 @@ export default function useReducerActions() {
   const { dispatch } = useContext(StoreContext);
 
   const getItems = useCallback(async () => {
-    console.log("I AM CALLED");
     const results = await ToDoHttp.getItems();
     await ToDoStorage.setItems(results);
 

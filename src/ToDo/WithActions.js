@@ -1,6 +1,8 @@
-import React, { useReducer, useEffect, useContext } from "react";
-import { reducers, initialState, useReducerActions } from "./store";
-import StoreContext from "./store/withoutMiddleware/context";
+import React, { useEffect, useContext } from "react";
+import { useReducerActions } from "./store";
+import StoreProvider, {
+  StoreContext
+} from "./store/withoutMiddleware/storeProvider";
 import { List, AddItemForm } from "./components";
 
 function ToDo() {
@@ -17,14 +19,12 @@ function ToDo() {
       <List items={state.todoItems} />
     </div>
   );
-} 
+}
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducers, initialState);
-
   return (
-    <StoreContext.Provider value={{ state, dispatch }}>
+    <StoreProvider>
       <ToDo />
-    </StoreContext.Provider>
+    </StoreProvider>
   );
 }

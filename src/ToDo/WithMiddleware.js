@@ -15,7 +15,7 @@ function ToDo() {
   return (
     <div className="todo-app">
         <AddItemForm />
-        <List items={state.todoItems || []} />
+        <List items={state.todoItems} />
     </div>
   );
 }

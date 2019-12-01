@@ -10,12 +10,11 @@ export default dispatch => async action => {
   switch (action.type) {
     case SET_TODO_ITEMS:
       await ToDoStorage.setItems(action.todoItems);
-      console.log("STORAGE GET TO DO");
+      console.log("STORAGE SET");
       return dispatch(action);
     case ADD_TODO: {
       await ToDoStorage.addItem(action);
       console.log("STORAGE ADD");
-
       return dispatch(action);
     }
     case TOGGLE_ITEM_COMPLETION: {
